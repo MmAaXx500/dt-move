@@ -1,17 +1,16 @@
 #!/usr/bin/env python3
 import platform
-
-linux = False
-if platform.system().lower().startswith('lin'):
-    import readline
-    linux = True
-
 from argparse import ArgumentParser
 from os import makedirs, path
 from os.path import isdir, isfile
 from shutil import copy2, copytree
 from sqlite3 import connect
 from typing import Dict, List, Tuple
+
+linux = False
+if platform.system().lower().startswith('lin'):
+    import readline
+    linux = True
 
 
 def main():
