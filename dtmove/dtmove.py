@@ -330,7 +330,9 @@ def ask_newlocation(old_path: str) -> str:
     ret = input("(w)rite, (q)uit: ")
     if linux:
         readline.parse_and_bind('tab: self-insert')
-    return ret[:-1] if ret[-1] == '\\' or ret[-1] == '/' else ret
+    if len(ret) > 0:
+        return ret[:-1] if ret[-1] == '\\' or ret[-1] == '/' else ret
+    return ret
 
 
 def remove_locations(basepaths: Dict[str, List[str]], path: str):
