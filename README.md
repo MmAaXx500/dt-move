@@ -53,6 +53,7 @@ DT-move can help in the following cases:
 
 * Python 3.8 or newer
 * Backup of your darktable configuration
+* Tested with darktable 3.4 and 3.6
 * Tested on Linux and Windows, probably works on Mac too (but there is no guarantee)
 
 ## Installation
