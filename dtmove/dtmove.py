@@ -221,7 +221,7 @@ def parse_pathmap(file: List[str], basepaths: Dict[str, List[str]], rewritemap: 
             splits = [e.strip() for e in splits]
             if len(splits) == 2 and splits[0] in basepaths:
                 rewritemap[splits[0]] = splits[1]
-                remove_locations(basepaths, splits[0])
+                remove_basepaths(basepaths, splits[0])
             else:
                 print(f"{linenum}. line is invalid. Skipped.")
 
@@ -293,7 +293,7 @@ def ask_paths(basepaths: Dict[str, List[str]]) -> Tuple[Dict[str, str], List[str
                 return {}, [], False
 
             rewritemap[old_location] = new_location
-            remove_locations(basepaths, old_location)
+            remove_basepaths(basepaths, old_location)
         else:
             print("The chosen option is not valid: \"{}\"".format(response))
 
@@ -335,11 +335,30 @@ def ask_newlocation(old_path: str) -> str:
     return ret
 
 
-def remove_locations(basepaths: Dict[str, List[str]], path: str):
-    """Remove key(s) from 'basepaths' specified by 'path', and any subdirectories"""
-    for e in basepaths.pop(path, []):
-        remove_locations(basepaths, e)
+def remove_basepaths(basepaths: Dict[str, List[str]], path: str):
+    """Remove key(s) from 'basepaths' specified by 'path', any subdirectories 
+    and parent directories if it's the only subdirectory"""
+    remove_basepaths_down(basepaths, path)
+    remove_basepaths_up(basepaths, path)
+
     return
+
+
+def remove_basepaths_down(basepaths: Dict[str, List[str]], path: str):
+    """Remove subdirectories"""
+    for e in basepaths.pop(path, []):
+        remove_basepaths_down(basepaths, e)
+
+
+def remove_basepaths_up(basepaths: Dict[str, List[str]], path: str):
+    """Remove parent directories if the `path` is the only subdir"""
+    sliceidx = max(path.rfind('\\'), path.rfind('/'))
+    if sliceidx > 0:
+        sliceidx = sliceidx - 1 if path[sliceidx-1] == '\\' else sliceidx
+        parentdir = path[:sliceidx]
+        if parentdir in basepaths and len(basepaths[parentdir]) <= 1:
+            basepaths.pop(parentdir)
+            remove_basepaths_up(basepaths, parentdir)
 
 
 def ask_summary(rewritemap: Dict[str, str], skips: List[str], noconfirm) -> bool:
