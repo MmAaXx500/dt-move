@@ -198,10 +198,10 @@ library              The location/destination of the library.db. (Required)
                      Requires --oldcfgdir and --newcfgdir
 
 -o --oldcfgdir       Old configuration directory location.
-                     Required for --lua, --config and --data
+                     Requires --separatecfg
 
 -n --newcfgdir       New configuration directory location.
-                     Required for --lua, --config and --data
+                     Requires --separatecfg
 
 -l --lua             Copy the lua directory and the luarc file
 

@@ -40,10 +40,10 @@ def main():
         action="store_true")
     parser.add_argument(
         "-o", "--oldcfgdir",
-        help="Old configuration directory location. Required for --lua, --config and --data")
+        help="Old configuration directory location. Requires --separatecfg")
     parser.add_argument(
         "-n", "--newcfgdir",
-        help="New configuration directory location. Required for --lua, --config and --data")
+        help="New configuration directory location. Requires --separatecfg")
     parser.add_argument(
         "-l", "--lua",
         help="Copy the lua directory and the luarc file",
