@@ -354,7 +354,6 @@ def remove_basepaths_up(basepaths: Dict[str, List[str]], path: str):
     """Remove parent directories if the `path` is the only subdir"""
     sliceidx = max(path.rfind('\\'), path.rfind('/'))
     if sliceidx > 0:
-        sliceidx = sliceidx - 1 if path[sliceidx-1] == '\\' else sliceidx
         parentdir = path[:sliceidx]
         if parentdir in basepaths and len(basepaths[parentdir]) <= 1:
             basepaths.pop(parentdir)
