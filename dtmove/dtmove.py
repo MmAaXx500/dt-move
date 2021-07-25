@@ -355,9 +355,12 @@ def remove_basepaths_up(basepaths: Dict[str, List[str]], path: str):
     sliceidx = max(path.rfind('\\'), path.rfind('/'))
     if sliceidx > 0:
         parentdir = path[:sliceidx]
-        if parentdir in basepaths and len(basepaths[parentdir]) <= 1:
-            basepaths.pop(parentdir)
-            remove_basepaths_up(basepaths, parentdir)
+        if parentdir in basepaths:
+            if len(basepaths[parentdir]) <= 1:
+                basepaths.pop(parentdir)
+                remove_basepaths_up(basepaths, parentdir)
+            else:
+                basepaths[parentdir].remove(path)
 
 
 def ask_summary(rewritemap: Dict[str, str], skips: List[str], noconfirm) -> bool:
