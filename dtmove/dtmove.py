@@ -74,7 +74,8 @@ def main():
                 print(
                     f"New config directory not found! Creating. \"{newcfgdir}\"")
                 makedirs(newcfgdir)
-        elif args.frompath:
+
+        if args.frompath:
             frompath = args.frompath
 
             if not isfile(frompath):
