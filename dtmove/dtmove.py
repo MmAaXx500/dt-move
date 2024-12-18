@@ -263,9 +263,26 @@ def find_bases(paths: list, bases: Dict[str, List[str]]) -> Dict[str, List[str]]
 
 def filter_bases(bases: Dict[str, List[str]]) -> Dict[str, List[str]]:
     """Return a list of directories witch have at least two subdirectories"""
-    return {k: v for k, v in bases.items()
-            if len(v) > 1 or
-            (len(v) == 1 and v[0] not in bases.keys())}
+    return {
+        k: v
+        for k, v in bases.items()
+        if len(v) > 1
+        or (
+            len(v) == 1
+            and (v[0] not in bases.keys() or has_junction_above(bases, v[0]))
+        )
+    }
+
+
+def has_junction_above(bases: Dict[str, List[str]], path: str) -> bool:
+    sep = "/" if "/" in path else "\\"
+    parts = path.split(sep)
+    for i in range(1, len(parts) - 1):
+        key = sep.join(parts[:i])
+
+        if len(bases.get(key, [])) > 1:
+            return True
+    return False
 
 
 def ask_paths(basepaths: Dict[str, List[str]]) -> Tuple[Dict[str, str], List[str], bool]:
