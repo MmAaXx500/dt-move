@@ -143,7 +143,6 @@ def main():
     cur = lib.cursor()
     paths = cur.execute('''SELECT folder FROM film_rolls''').fetchall()
     paths = [e[0] for e in paths]
-    basepaths = get_basepaths(paths, args.nofilter)
 
     rewritemap: Dict[str, str] = {}
     skips: List[str] = []
@@ -155,6 +154,7 @@ def main():
             print_and_quit(f"Pathmap not found! \"{pathmap}\"", 1)
 
         file = open(pathmap, "r").readlines()
+        basepaths = get_basepaths(paths, True)
         parse_pathmap(file, basepaths, rewritemap)
 
         skips = list(basepaths.keys())
@@ -162,6 +162,7 @@ def main():
             ok = True
 
     else:
+        basepaths = get_basepaths(paths, args.nofilter)
         rewritemap, skips, ok = ask_paths(basepaths)
 
     if ok:
