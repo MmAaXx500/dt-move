@@ -173,14 +173,14 @@ def main():
                     UPDATE film_rolls
                     SET folder =
                         REPLACE(REPLACE(folder, (?), (?)), (?), (?))
-                    WHERE folder like (?)"""
+                    WHERE folder GLOB (?)"""
 
                 if '/' in old and ':' in new:
-                    cur.execute(query, (old, new, '/', '\\', old + '%'))
+                    cur.execute(query, (old, new, '/', '\\', old + '*'))
                 elif ':' in old and '/' in new:
-                    cur.execute(query, (old, new, '\\', '/', old + '%'))
+                    cur.execute(query, (old, new, '\\', '/', old + '*'))
                 else:
-                    cur.execute(query, (old, new, '', '', old + '%'))
+                    cur.execute(query, (old, new, '', '', old + '*'))
 
             lib.commit()
 
